@@ -32,10 +32,3 @@ export const ErrorHandlingMiddleware = (err: any, req: Request, res: Response, n
 
     res.status(err.status).json(response);
 };
-
-// todo usar el middleware de errores en el servidor
-// import express from 'express';
-// const app = express();
-
-// app.use('/some-route', someRouteHandler);
-// app.use(ErrorHandlingMiddleware);
