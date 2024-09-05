@@ -1,12 +1,11 @@
 import { IEventRepository } from '@domain/repositories/IEventRepository';
+import {EventRepository} from "@infrastructure/repositories/EventRepository";
 import { Event } from '@domain/entities/Event';
-import {inject, injectable} from "tsyringe";
+import {autoInjectable, inject, injectable} from "tsyringe";
 
-@injectable()
+@autoInjectable()
 export class EventService {
-    constructor(
-        @inject('IEventRepository') private readonly eventRepository: IEventRepository
-    ) {}
+    constructor(@inject(EventRepository) private readonly eventRepository: IEventRepository) {}
 
     public async createEvent(eventData: any): Promise<Event[]> {
         const event = new Event(

@@ -1,11 +1,11 @@
 import { Request, Response } from 'express';
 import { FindNearbyEventsUseCase } from '@application/use-cases/FindNearbyEventsUseCase';
 import {HttpStatusCodes} from "@shared/contants/HttpStatusCodes";
-import {inject, injectable} from "tsyringe";
+import {autoInjectable, inject, injectable} from "tsyringe";
 
-@injectable()
+@autoInjectable()
 export class LocationController {
-    constructor(@inject(FindNearbyEventsUseCase) private findNearbyEventsUseCase: FindNearbyEventsUseCase) {}
+    constructor(private findNearbyEventsUseCase: FindNearbyEventsUseCase) {}
 
     public async findNearbyEvents(req: Request, res: Response): Promise<void> {
         try {

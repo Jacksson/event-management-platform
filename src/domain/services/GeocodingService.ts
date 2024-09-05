@@ -1,6 +1,6 @@
 import {MapboxService} from "@infrastructure/external/mapbox/MapboxService";
 import {PostgisService} from "@infrastructure/external/postgis/PostgisService";
-import {injectable} from "tsyringe";
+import {inject, injectable} from "tsyringe";
 
 @injectable()
 export class GeocodingService {
@@ -8,7 +8,9 @@ export class GeocodingService {
     private postgisService: PostgisService;
     private useMapbox: boolean;
 
-    constructor(mapboxService: MapboxService, postgisService: PostgisService, useMapbox: boolean) {
+    constructor(
+        @inject(MapboxService) mapboxService: MapboxService,
+        @inject(PostgisService) postgisService: PostgisService, useMapbox: boolean) {
         this.mapboxService = mapboxService;
         this.postgisService = postgisService;
         this.useMapbox = useMapbox;

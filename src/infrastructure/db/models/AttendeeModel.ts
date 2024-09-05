@@ -1,7 +1,5 @@
 import { Model, DataTypes, Optional } from 'sequelize';
 import { sequelize } from '../orm/Sequelize';
-import { EventModel } from './EventModel';
-import { UserModel } from './UserModel';
 
 interface AttendeeAttributes {
     id: string;
@@ -42,6 +40,3 @@ AttendeeModel.init(
         timestamps: true,
     }
 );
-
-AttendeeModel.belongsTo(EventModel, { foreignKey: 'eventId', as: 'event' });
-AttendeeModel.belongsTo(UserModel, { foreignKey: 'userId', as: 'user' });

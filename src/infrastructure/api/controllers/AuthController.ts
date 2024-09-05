@@ -1,11 +1,11 @@
 import { Request, Response } from 'express';
 import { AuthService } from '@domain/services/AuthService';
 import {HttpStatusCodes} from "@shared/contants/HttpStatusCodes";
-import {inject, injectable} from "tsyringe";
+import {autoInjectable, inject, injectable} from "tsyringe";
 
-@injectable()
+@autoInjectable()
 export class AuthController {
-    constructor(@inject(AuthService) private authService: AuthService) {}
+    constructor(private authService: AuthService) {}
 
     public async register(req: Request, res: Response): Promise<void> {
         try {

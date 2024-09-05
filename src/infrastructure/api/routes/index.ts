@@ -4,6 +4,7 @@ import locationRoutes from "@infrastructure/api/routes/locationRoutes";
 import attendeeRoutes from "@infrastructure/api/routes/attendeeRoutes";
 import eventRoutes from "@infrastructure/api/routes/eventRoutes";
 import authRoutes from "@infrastructure/api/routes/authRoutes";
+import logsRoutes from "@infrastructure/api/routes/logsRoutes";
 
 const router = Router();
 
@@ -11,7 +12,9 @@ const router = Router();
 router.use('/events', eventRoutes);
 router.use('/attendees', attendeeRoutes);
 router.use('/auth', authRoutes);
-router.use('/locations', locationRoutes);
+// router.use('/locations', locationRoutes);
+
 router.use(healthRoutes);
+router.use(logsRoutes);
 
 export { router as apiRoutes };

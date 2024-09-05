@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.9'
 services:
   app:
     build:
@@ -18,19 +18,23 @@ services:
       - app-network
     restart: unless-stopped
 
-  db:
-    image: postgres:15-alpine
+  redis:
+    image: 'bitnami/redis:latest'
     environment:
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-    volumes:
-      - pgdata:/var/lib/postgresql/data
+      - ALLOW_EMPTY_PASSWORD=yes
     networks:
       - app-network
 
-  redis:
-    image: redis:7-alpine
+  db:
+    image: postgres:15-alpine
+    env_file:
+    - .env
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
     networks:
       - app-network
 

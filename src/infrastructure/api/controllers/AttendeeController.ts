@@ -1,11 +1,11 @@
 import { Request, Response } from 'express';
 import { AttendeeService } from '@application/services/AttendeeService';
 import {HttpStatusCodes} from "@shared/contants/HttpStatusCodes";
-import {inject, injectable} from "tsyringe";
+import {autoInjectable, inject, injectable} from "tsyringe";
 
-@injectable()
+@autoInjectable()
 export class AttendeeController {
-    constructor(@inject(AttendeeService) private attendeeService: AttendeeService) {}
+    constructor(private attendeeService: AttendeeService) {}
 
     public async registerAttendee(req: Request, res: Response): Promise<void> {
         try {

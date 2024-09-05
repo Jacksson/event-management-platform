@@ -1,9 +1,12 @@
 
 import { IAttendeeRepository } from '@domain/repositories/IAttendeeRepository';
 import { Attendee } from '@domain/entities/Attendee';
+import {autoInjectable, inject} from "tsyringe";
+import {AttendeeRepository} from "@infrastructure/repositories/AttendeeRepository";
 
+@autoInjectable()
 export class AttendeeService {
-    constructor(private readonly attendeeRepository: IAttendeeRepository) {}
+    constructor(@inject(AttendeeRepository) private readonly attendeeRepository: IAttendeeRepository) {}
 
     public async registerAttendee(attendeeData: any): Promise<void> {
         const attendee = new Attendee(

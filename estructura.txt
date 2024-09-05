@@ -1,91 +1,125 @@
-event-management-platform/
-├── config/                     # Configuración de la aplicación (p.ej., env, conexión DB, etc.)
-│   ├── config.ts
-│   ├── mapbox.config.ts
-│   └── postgis.config.ts
-├── src/
-│   ├── application/            # Capa de aplicación (casos de uso, orquestadores)
-│   │   ├── use-cases/
-│   │   │   ├── CreateEventUseCase.ts
-│   │   │   ├── DeleteEventUseCase.ts
-│   │   │   ├── RegisterAttendeeUseCase.ts
-│   │   │   └── ...
-│   ├── domain/                 # Capa de dominio (entidades, repositorios, servicios de dominio)
-│   │   ├── entities/
-│   │   │   ├── Event.ts
-│   │   │   ├── Attendee.ts
-│   │   │   └── ...
-│   │   ├── repositories/
-│   │   │   ├── EventRepository.ts
-│   │   │   ├── AttendeeRepository.ts
-│   │   │   └── ...
-│   │   ├── services/
-│   │   │   └── EventService.ts
-│   │   └── value-objects/
-│   │       ├── EventId.ts
-│   │       └── ...
-│   ├── infrastructure/         # Capa de infraestructura (implementaciones de repositorios, controladores, API, adaptadores)
-│   │   ├── api/
-│   │   │   ├── controllers/
-│   │   │   │   ├── EventController.ts
-│   │   │   │   └── ...
-│   │   │   ├── middlewares/
-│   │   │   │   ├── AuthMiddleware.ts
-│   │   │   │   └── ErrorHandlingMiddleware.ts
-│   │   │   └── routes/
-│   │   │       ├── eventRoutes.ts
-│   │   │       └── ...
-│   │   ├── db/
-│   │   │   ├── migrations/
-│   │   │   ├── models/
-│   │   │   │   ├── EventModel.ts
-│   │   │   │   └── ...
-│   │   │   └── orm/
-│   │   │       └── Sequelize.ts
-│   │   ├── external/            # Integraciones externas (p.ej., Mapbox, PostGIS)
-│   │   │   ├── mapbox/
-│   │   │   │   └── MapboxService.ts
-│   │   │   ├── postgis/
-│   │   │   │   └── PostgisService.ts
-│   │   │   └── excel/
-│   │   │       └── ExcelProcessor.ts
-│   │   └── observability/       # Observabilidad (Prometheus, Grafana)
-│   │       └── MetricsService.ts
-│   ├── interfaces/              # Capa de interfaces (DTOs, interfaces para inyección de dependencias)
-│   │   ├── dtos/
-│   │   │   ├── CreateEventDTO.ts
-│   │   │   ├── UpdateEventDTO.ts
-│   │   │   └── ...
-│   │   └── adapters/
-│   │       ├── IEventRepository.ts
-│   │       └── ...
-│   ├── main/                    # Punto de entrada de la aplicación
-│   │   ├── server.ts
-│   │   └── app.ts
-│   └── shared/                  # Código compartido (helpers, utils, constantes)
-│       ├── utils/
-│       │   ├── dateUtils.ts
-│       │   ├── jwtUtils.ts
-│       │   └── ...
-│       └── constants/
-│           ├── eventTypes.ts
-│           └── ...
-├── test/                        # Pruebas unitarias y de integración
-│   ├── unit/
-│   │   └── ...
-│   └── integration/
-│       └── ...
-├── docker/
-│   ├── Dockerfile               # Dockerfile para la aplicación
-│   ├── docker-compose.yml       # Configuración de Docker Compose
-│   └── ...
-├── scripts/                     # Scripts de base de datos (DDL, DML)
-│   ├── create_tables.sql
-│   ├── insert_data.sql
-│   └── ...
-├── docs/                        # Documentación (Swagger, guías)
-│   ├── swagger.yaml
-│   └── ...
-├── .env                         # Variables de entorno
-├── package.json
-└── tsconfig.json
+.
+|-- docker
+|   |-- Dockerfile
+|   `-- docker-compose.yml
+|-- docs
+|   |-- readme.md
+|   `-- swagger.yaml
+|-- estructura.txt
+|-- package-lock.json
+|-- package.json
+|-- scripts
+|-- src
+|   |-- application
+|   |   |-- services
+|   |   |   |-- AttendeeService.ts
+|   |   |   |-- EventService.ts
+|   |   |   `-- LocationService.ts
+|   |   `-- use-cases
+|   |       |-- CreateEventUseCase.ts
+|   |       |-- DeleteEventUseCase.ts
+|   |       |-- FindEventByIdUseCase.ts
+|   |       |-- FindEventsByOrganizerUseCase.ts
+|   |       |-- FindNearbyEventsUseCase.ts
+|   |       |-- RegisterAttendeeUseCase.ts
+|   |       `-- UpdateEventUseCase.ts
+|   |-- domain
+|   |   |-- entities
+|   |   |   |-- Attendee.ts
+|   |   |   |-- BaseEntity.ts
+|   |   |   |-- Event.ts
+|   |   |   |-- Location.ts
+|   |   |   `-- User.ts
+|   |   |-- errors
+|   |   |   |-- HttpError.ts
+|   |   |   `-- ValidationHttpError.ts
+|   |   |-- repositories
+|   |   |   |-- IAttendeeRepository.ts
+|   |   |   |-- IEventRepository.ts
+|   |   |   |-- ILocationRepository.ts
+|   |   |   `-- IUserRepository.ts
+|   |   |-- services
+|   |   |   |-- AttendeeService.ts
+|   |   |   |-- AuthService.ts
+|   |   |   |-- EventService.ts
+|   |   |   |-- ExcelProcessingService.ts
+|   |   |   |-- GeocodingService.ts
+|   |   |   |-- LocationService.ts
+|   |   |   `-- MetricsService.ts
+|   |   `-- value-objects
+|   |       |-- Address.ts
+|   |       |-- Coordinates.ts
+|   |       `-- Email.ts
+|   |-- infrastructure
+|   |   |-- api
+|   |   |   |-- controllers
+|   |   |   |   |-- AttendeeController.ts
+|   |   |   |   |-- AuthController.ts
+|   |   |   |   |-- EventController.ts
+|   |   |   |   |-- HealthCheckController.ts
+|   |   |   |   `-- LocationController.ts
+|   |   |   |-- middlewares
+|   |   |   |   |-- AuthMiddleware.ts
+|   |   |   |   |-- ErrorHandlingMiddleware.ts
+|   |   |   |   |-- LoggingMiddleware.ts
+|   |   |   |   `-- ValidationMiddleware.ts
+|   |   |   `-- routes
+|   |   |       |-- attendeeRoutes.ts
+|   |   |       |-- authRoutes.ts
+|   |   |       |-- eventRoutes.ts
+|   |   |       |-- healthRoutes.ts
+|   |   |       |-- index.ts
+|   |   |       `-- locationRoutes.ts
+|   |   |-- container
+|   |   |   `-- index.ts
+|   |   |-- db
+|   |   |   |-- migrations
+|   |   |   |   |-- 001-create-events-table.ts
+|   |   |   |   |-- 002-create-users-table.ts
+|   |   |   |   `-- 003-create-attendees-table.ts
+|   |   |   |-- models
+|   |   |   |   |-- AttendeeModel.ts
+|   |   |   |   |-- EventModel.ts
+|   |   |   |   `-- UserModel.ts
+|   |   |   `-- orm
+|   |   |       `-- Sequelize.ts
+|   |   |-- external
+|   |   |   |-- excel
+|   |   |   |   `-- ExcelProcessor.ts
+|   |   |   |-- mapbox
+|   |   |   |   `-- MapboxService.ts
+|   |   |   `-- postgis
+|   |   |       `-- PostgisService.ts
+|   |   |-- observability
+|   |   |   `-- MetricsService.ts
+|   |   `-- repositories
+|   |       |-- AttendeeRepository.ts
+|   |       |-- EventRepository.ts
+|   |       |-- LocationRepository.ts
+|   |       `-- UserRepository.ts
+|   |-- interfaces
+|   |   `-- dtos
+|   |       |-- AttendeeDTO.ts
+|   |       |-- EventDTO.ts
+|   |       |-- LocationDTO.ts
+|   |       |-- PaginationDTO.ts
+|   |       `-- UserDTO.ts
+|   |-- main
+|   |   |-- app.ts
+|   |   `-- server.ts
+|   `-- shared
+|       |-- contants
+|       |   |-- Config.ts
+|       |   |-- ErrorMessages.ts
+|       |   |-- HttpStatusCodes.ts
+|       |   |-- RegexPatterns.ts
+|       |   `-- SuccessMessages.ts
+|       `-- utils
+|           |-- DateFormatter.ts
+|           |-- FileHandler.ts
+|           |-- Logger.ts
+|           |-- TokenManager.ts
+|           `-- Validator.ts
+`-- tsconfig.json
+
+35 directories, 87 files

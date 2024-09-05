@@ -3,9 +3,9 @@ import { Event } from '@domain/entities/Event';
 import { QueryTypes } from 'sequelize';
 import {sequelize} from "@infrastructure/db/orm/Sequelize";
 import {Location} from "@domain/entities/Location";
-import {injectable} from "tsyringe";
+import {autoInjectable, injectable} from "tsyringe";
 
-@injectable()
+@autoInjectable()
 export class EventRepository implements IEventRepository {
     public async create(event: Event): Promise<Event[]> {
         const result = await sequelize.query(

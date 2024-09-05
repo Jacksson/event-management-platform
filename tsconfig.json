@@ -4,10 +4,13 @@
     "module": "commonjs",
     "strict": true,
     "esModuleInterop": true,
+    "skipLibCheck": true,
     "outDir": "./dist",
     "baseUrl": "./",
+    "rootDir": "./",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
+    "moduleResolution": "node",
     "paths": {
       "@application/*": ["src/application/*"],
       "@domain/*": ["src/domain/*"],

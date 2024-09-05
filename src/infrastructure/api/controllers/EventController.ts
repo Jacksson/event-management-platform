@@ -1,14 +1,12 @@
 import { Request, Response } from 'express';
 import { EventService } from '@application/services/EventService';
-import {inject, injectable} from "tsyringe";
+import {autoInjectable, inject, injectable} from "tsyringe";
 import {HttpStatusCodes} from "@shared/contants/HttpStatusCodes";
 import {ErrorMessages} from "@shared/contants/ErrorMessages";
 
-@injectable()
+@autoInjectable()
 export class EventController {
-    constructor(
-        @inject(EventService) private eventService: EventService
-    ) {}
+    constructor(private eventService: EventService) {}
 
     public async createEvent(req: Request, res: Response): Promise<void> {
         try {

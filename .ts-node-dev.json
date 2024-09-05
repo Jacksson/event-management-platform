@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "baseUrl": "./src",
+    "paths": {
+      "@infrastructure/*": ["infrastructure/*"],
+      "@domain/*": ["domain/*"],
+      "@application/*": ["application/*"],
+      "@shared/*": ["shared/*"]
+    }
+  }
+}

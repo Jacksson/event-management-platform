@@ -1,10 +1,9 @@
 import 'reflect-metadata'; // Necesario para tsyringe
 import express, { Application } from 'express';
-import { container } from 'tsyringe';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
-import { apiRoutes } from '@infrastructure/api/routes';
+import { apiRoutes } from  '../infrastructure/api/routes'
 import { ErrorHandlingMiddleware } from '@infrastructure/api/middlewares/ErrorHandlingMiddleware';
 import {LoggingMiddleware} from "@infrastructure/api/middlewares/LoggingMiddleware";
 

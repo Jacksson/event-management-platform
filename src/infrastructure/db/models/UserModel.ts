@@ -1,6 +1,5 @@
 import { Model, DataTypes, Optional } from 'sequelize';
 import { sequelize } from '../orm/Sequelize';
-import { EventModel } from './EventModel';
 
 interface UserAttributes {
     id: string;
@@ -57,4 +56,3 @@ UserModel.init(
     }
 );
 
-UserModel.hasMany(EventModel, { foreignKey: 'organizerId', as: 'organizedEvents' });

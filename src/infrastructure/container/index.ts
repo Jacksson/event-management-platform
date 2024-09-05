@@ -34,18 +34,16 @@ import {UpdateEventUseCase} from "@application/use-cases/UpdateEventUseCase";
 
 import { EventController } from '@infrastructure/api/controllers/EventController';
 import { AuthMiddleware } from '@infrastructure/api/middlewares/AuthMiddleware';
-
-// Registrar use-cases
-container.registerSingleton<CreateEventUseCase>('CreateEventUseCase', CreateEventUseCase);
-container.registerSingleton<DeleteEventUseCase>('DeleteEventUseCase', DeleteEventUseCase);
-container.registerSingleton<FindEventByIdUseCase>('FindEventByIdUseCase', FindEventByIdUseCase);
-container.registerSingleton<FindEventsByOrganizerUseCase>('FindEventsByOrganizerUseCase', FindEventsByOrganizerUseCase);
-container.registerSingleton<FindNearbyEventsUseCase>('FindNearbyEventsUseCase', FindNearbyEventsUseCase);
-container.registerSingleton<RegisterAttendeeUseCase>('RegisterAttendeeUseCase', RegisterAttendeeUseCase);
-container.registerSingleton<UpdateEventUseCase>('UpdateEventUseCase', UpdateEventUseCase);
+import {PostgisService} from "@infrastructure/external/postgis/PostgisService";
+import {MapboxService} from "@infrastructure/external/mapbox/MapboxService";
+import {constructor} from "tsyringe/dist/typings/types";
 
 // Registrar repositorios
-container.registerSingleton<IEventRepository>('IEventRepository', EventRepository);
+//container.registerSingleton<IEventRepository>('IEventRepository', EventRepository);
+//container.registerSingleton<IEventRepository>('IEventRepository', EventRepository);
+console.log("Registering IEventRepository");
+container.register<IEventRepository>('IEventRepository', { useClass: EventRepository });
+console.log("Registered IEventRepository successfully");
 container.registerSingleton<IUserRepository>('IUserRepository', UserRepository);
 container.registerSingleton<IAttendeeRepository>('IAttendeeRepository', AttendeeRepository);
 container.registerSingleton<ILocationRepository>('ILocationRepository', LocationRepository);
@@ -57,9 +55,23 @@ container.register<IUserRepository>('IUserRepository', { useClass: UserRepositor
 // Registrar servicios de dominio
 container.registerSingleton<DomainEventService>('DomainEventService', DomainEventService);
 container.registerSingleton<DomainAttendeeService>('DomainAttendeeService', DomainAttendeeService);
+console.log("Registering DomainLocationService");
 container.registerSingleton<DomainLocationService>('DomainLocationService', DomainLocationService);
+console.log("Registered DomainLocationService successfully");
 container.registerSingleton<DomainMetricsService>('DomainMetricsService', DomainMetricsService);
-container.registerSingleton<GeocodingService>('GeocodingService', GeocodingService);
+//container.registerSingleton<GeocodingService>('GeocodingService', GeocodingService);
+container.register(MapboxService, { useClass: MapboxService });
+container.register(PostgisService, { useClass: PostgisService });
+container.register<GeocodingService>('GeocodingService', {
+    useFactory: (dependencyContainer) => {
+        return new GeocodingService(
+            dependencyContainer.resolve(MapboxService),
+            dependencyContainer.resolve(PostgisService),
+            true
+        );
+    }
+});
+
 container.registerSingleton<ExcelProcessingService>('ExcelProcessingService', ExcelProcessingService);
 container.registerSingleton<AuthService>('AuthService', AuthService);
 
@@ -67,6 +79,15 @@ container.registerSingleton<AuthService>('AuthService', AuthService);
 container.registerSingleton<ApplicationEventService>('ApplicationEventService', ApplicationEventService);
 container.registerSingleton<ApplicationAttendeeService>('ApplicationAttendeeService', ApplicationAttendeeService);
 container.registerSingleton<ApplicationLocationService>('ApplicationLocationService', ApplicationLocationService);
+
+// Registrar use-cases
+container.registerSingleton<CreateEventUseCase>('CreateEventUseCase', CreateEventUseCase);
+container.registerSingleton<DeleteEventUseCase>('DeleteEventUseCase', DeleteEventUseCase);
+container.registerSingleton<FindEventByIdUseCase>('FindEventByIdUseCase', FindEventByIdUseCase);
+container.registerSingleton<FindEventsByOrganizerUseCase>('FindEventsByOrganizerUseCase', FindEventsByOrganizerUseCase);
+container.registerSingleton<FindNearbyEventsUseCase>('FindNearbyEventsUseCase', FindNearbyEventsUseCase);
+container.registerSingleton<RegisterAttendeeUseCase>('RegisterAttendeeUseCase', RegisterAttendeeUseCase);
+container.registerSingleton<UpdateEventUseCase>('UpdateEventUseCase', UpdateEventUseCase);
 
 // Registrar controladores
 container.registerSingleton<EventController>('EventController', EventController);
