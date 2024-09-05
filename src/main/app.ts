@@ -8,6 +8,8 @@ import { apiRoutes } from  '../infrastructure/api/routes'
 import { ErrorHandlingMiddleware } from '@infrastructure/api/middlewares/ErrorHandlingMiddleware';
 import {LoggingMiddleware} from "@infrastructure/api/middlewares/LoggingMiddleware";
 import {Logger} from "@shared/utils/Logger";
+import {metricsService} from "@infrastructure/observability/MetricsService";
+import {idempotencyMiddleware} from "@infrastructure/api/middlewares/IdempotencyMiddleware";
 
 export const createApp = (): Application => {
     const app = express();
@@ -45,7 +47,7 @@ export const createApp = (): Application => {
         stream: {
             write: (message) => Logger.info(message.trim()), // Redirigir logs a Winston
         },
-    }));        // Logging de solicitudes HTTP
+    }));                                // Logging de solicitudes HTTP
 
     // Middleware de parsing
     app.use(express.json());
@@ -55,9 +57,9 @@ export const createApp = (): Application => {
     app.use(LoggingMiddleware.logRequests);
     app.use(apiRoutes);
     app.use(ErrorHandlingMiddleware);
+    // app.use(idempotencyMiddleware); //TODO: habilitar si se desea idenpotency en todas las rutas
 
-    // Middleware de manejo de errores
-    //app.use(container.resolve(ErrorHandlingMiddleware).handle);
+    metricsService.setupMetricsEndpoint(app);
 
     return app;
 };

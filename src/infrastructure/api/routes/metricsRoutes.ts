@@ -1,16 +1,25 @@
-import { Router } from 'express';
-import {collectDefaultMetrics, Registry} from "prom-client";
-
-const register = new Registry();
-// Recopilar métricas predeterminadas
-collectDefaultMetrics({ register });
+import {NextFunction, Request, Response, Router} from 'express';
+import {metricsService} from "@infrastructure/observability/MetricsService";
 
 const router = Router();
 
-router.get('/metrics', async (req, res) => {
-    res.set('Content-Type', register.contentType);
-    res.end(await register.metrics());
-});
+router.use((req: Request, res: Response, next: NextFunction) => {
+    const end = metricsService.getHttpRequestDuration().startTimer({
+        method: req.method,
+        route: req.route?.path || req.path,
+    });
 
+    res.on('finish', () => {
+        metricsService.getRequestCounter().inc({
+            method: req.method,
+            route: req.route?.path || req.path,
+            status_code: res.statusCode.toString(),
+        });
+        end({ status_code: res.statusCode.toString() });
+    });
+
+    next();
+});
 export default router;
+
 

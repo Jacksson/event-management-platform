@@ -1,6 +1,7 @@
 import {MapboxService} from "@infrastructure/external/mapbox/MapboxService";
 import {PostgisService} from "@infrastructure/external/postgis/PostgisService";
 import {inject, injectable} from "tsyringe";
+import {withCircuitBreaker} from "@infrastructure/resilience/CircuitBreakerService";
 
 @injectable()
 export class GeocodingService {
@@ -18,7 +19,10 @@ export class GeocodingService {
 
     public async geocodeAddress(address: string): Promise<any> {
         if (this.useMapbox) {
-            return await this.mapboxService.geocodeAddress(address);
+            return await withCircuitBreaker(async () => {  // todo: certificar eficiencia aqui incluir en el metodo axios.get
+                // Llamada a la API de Mapbox
+                return await this.mapboxService.geocodeAddress(address);
+            });
         } else {
             return await this.postgisService.geocodeAddress(address);
         }

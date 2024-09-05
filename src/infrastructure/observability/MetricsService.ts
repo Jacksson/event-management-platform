@@ -41,31 +41,3 @@ export class MetricsService {
 }
 
 export const metricsService = new MetricsService();
-
-/*
- import express, { Request, Response, NextFunction } from 'express';
-import { metricsService } from '../observability/MetricsService';
-
-const app = express();
-
-app.use((req: Request, res: Response, next: NextFunction) => {
-  const end = metricsService.getHttpRequestDuration().startTimer({
-    method: req.method,
-    route: req.route?.path || req.path,
-  });
-
-  res.on('finish', () => {
-    metricsService.getRequestCounter().inc({
-      method: req.method,
-      route: req.route?.path || req.path,
-      status_code: res.statusCode.toString(),
-    });
-    end({ status_code: res.statusCode.toString() });
-  });
-
-  next();
-});
-
-metricsService.setupMetricsEndpoint(app);
-
- */
