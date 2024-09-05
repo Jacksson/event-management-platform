@@ -3,10 +3,11 @@ import 'reflect-metadata'; // Necesario para tsyringe
 import { createApp } from './app';
 import {Logger} from "@shared/utils/Logger";
 
+import {container} from "tsyringe";
 //import '../infrastructure/container';
 import {sequelize} from "@infrastructure/db/orm/Sequelize";
 import {applyAssociations} from "@infrastructure/db/models/associations";
-import {container} from "tsyringe";
+import {initTracing} from "@infrastructure/external/tracing/Tracing";
 
 //const obj = container.resolve('IEventRepository');
 //console.log(obj);
@@ -17,6 +18,8 @@ import {container} from "tsyringe";
 
         // Sincronizar los modelos con la base de datos
         await sequelize.sync({ alter: true });
+
+        await initTracing(); // Inicializar OpenTelemetry
 
         console.log('Conexión exitosa con la base de datos');
     } catch (error) {
